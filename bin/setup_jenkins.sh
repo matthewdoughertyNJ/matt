@@ -16,10 +16,23 @@ echo "Setting up Jenkins in project ${GUID}-jenkins from Git Repo ${REPO} for Cl
 # DO NOT FORGET TO PASS '-n ${GUID}-jenkins to ALL commands!!'
 # You do not want to set up things in the wrong project.
 # TBD
+oc new-project ${GUID}-jenkins --display-name "${GUID} Shared Jenkins"
+oc new-app jenkins-persistent --param ENABLE_OAUTH=true --param MEMORY_LIMIT=2Gi --param VOLUME_CAPACITY=4Gi --param DISABLE_ADMINISTRATIVE_MONITORS=true
+oc set resources dc jenkins --limits=cpu=2 --requests=cpu=1,memory=2Gi -n ${GUID}-jenkins
 
 # Create custom agent container image with skopeo.
 # Build config must be called 'jenkins-agent-appdev' for the test below to succeed
   # TBD
+oc new-build --strategy=docker -D $'FROM quay.io/openshift/origin-jenkins-agent-maven:4.1.0\n
+   USER root\n
+   RUN curl https://copr.fedorainfracloud.org/coprs/alsadi/dumb-init/repo/epel-7/alsadi-dumb-init-epel-7.repo -o /etc/yum.repos.d/alsadi-dumb-init-epel-7.repo && \ \n
+   curl https://raw.githubusercontent.com/cloudrouter/centos-repo/master/CentOS-Base.repo -o /etc/yum.repos.d/CentOS-Base.repo && \ \n
+   curl http://mirror.centos.org/centos-7/7/os/x86_64/RPM-GPG-KEY-CentOS-7 -o /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 && \ \n
+   DISABLES="--disablerepo=rhel-server-extras --disablerepo=rhel-server --disablerepo=rhel-fast-datapath --disablerepo=rhel-server-optional --disablerepo=rhel-server-ose --disablerepo=rhel-server-rhscl" && \ \n
+   yum $DISABLES -y --setopt=tsflags=nodocs install skopeo && yum clean all\n
+   USER 1001' --name=jenkins-agent-appdev -n ${GUID}-jenkins
+
+
 
 
 # Create Secret with credentials to access the private repository
@@ -28,14 +41,41 @@ echo "Setting up Jenkins in project ${GUID}-jenkins from Git Repo ${REPO} for Cl
 # Passing it from Jenkins would show it in the Jenkins Log
 # TBD
 
+oc create secret generic my-gitea-secret --from-literal=username=mdougherty-stonedoorgroup.com --from-literal=password=redhat
+oc set build-secret --source bc/jenkins-agent-appdev my-gitea-secret
 
 
 # Create pipeline build config pointing to the ${REPO} with contextDir `openshift-tasks`
 # Build config has to be called 'tasks-pipeline'.
 # Make sure you use your secret to access the repository
 # TBD
-
-
+cat > tasks-pipeline-bc.yaml << EOF
+kind: "BuildConfig"
+apiVersion: "v1"
+metadata:
+  name: "tasks-pipeline"
+spec:
+  source:
+    type: "Git"
+    git:
+      uri: "https://github.com/redhat-gpte-devopsautomation/ocp4_app_deploy_homework_template.git"
+      ref: "master"
+    contextDir: "openshift-tasks"
+  strategy:
+    type: "JenkinsPipeline"
+    jenkinsPipelineStrategy:
+      jenkinsfilePath: Jenkinsfile
+      env:
+        - name: GUID
+          value: 1c48
+        - name: REPO
+          value: https://github.com/redhat-gpte-devopsautomation/ocp4_app_deploy_homework_template.git
+        - name: CLUSTER
+          value: https://api.shared.na.openshift.opentlc.com:6443
+EOF
+sed -i "s/: REPO/: ${REPO}/g" tasks-pipeline-bc.yaml
+sed -i "s/: GUID/: ${GUID}/g" tasks-pipeline-bc.yaml
+oc apply -f tasks-pipeline-bc.yaml -n ${GUID}-jenkins
 
 # ========================================
 # No changes are necessary below this line
