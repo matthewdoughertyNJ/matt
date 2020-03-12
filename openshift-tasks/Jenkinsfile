@@ -124,9 +124,10 @@ pipeline {
     stage('Build and Tag OpenShift Image') {
       steps {
         dir('openshift-tasks') {
-          echo "Building OpenShift container image ${imageName}:${devTag} in project ${devProject}."
-          echo "aaa"
-	  echo "running start build on homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/"+${GUID}+"-tasks/"+${version}+"/"+${GUID}+"-tasks-"+${version}+".war"
+          //echo "Building OpenShift container image ${imageName}:${devTag} in project ${devProject}."
+          //echo "aaa"
+	  //echo "running start build on homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/"+${GUID}+"-tasks/"+${version}+"/"+${GUID}+"-tasks-"+${version}+".war"
+	  echo "run start-build ${GUID}-tasks ${version} ${GUID}-tasks-${version}.war"
           script {
           openshift.withCluster() {
             openshift.withProject("${devProject}") {
