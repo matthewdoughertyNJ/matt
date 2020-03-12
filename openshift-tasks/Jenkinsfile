@@ -128,7 +128,10 @@ pipeline {
           //echo "aaa"
 	  //echo "running start build on homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/"+${GUID}+"-tasks/"+${version}+"/"+${GUID}+"-tasks-"+${version}+".war"
 	  echo "run start-build ${GUID}-tasks ${version} ${GUID}-tasks-${version}.war"
+	  echo "matt123"
           script {
+	  echo "run start-build ${GUID}-tasks ${version} ${GUID}-tasks-${version}.war"
+	  echo "matt1231"
           openshift.withCluster() {
             openshift.withProject("${devProject}") {
               //  openshift.selector("bc", "tasks").startBuild("--from-file=./target/openshift-tasks.war", "--wait=true")
