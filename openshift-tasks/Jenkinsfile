@@ -138,7 +138,8 @@ pipeline {
             openshift.withProject("${devProject}") {
               //  openshift.selector("bc", "tasks").startBuild("--from-file=./target/openshift-tasks.war", "--wait=true")
 
-              openshift.selector("bc", "tasks").startBuild("--from-file=http://homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/${GUID}-tasks/${devTag}/${GUID}-tasks-${devTag}.war")
+              openshift.selector("bc", "tasks").startBuild("--from-file=https://homework-nexus.apps.shared.na.openshift.opentlc.com/repository/releases/org/jboss/quickstarts/eap/${GUID}-tasks/${devTag}/${GUID}-tasks-${devTag}.war")
+              //openshift.selector("bc", "tasks").startBuild("--from-file=http://homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/${GUID}-tasks/${devTag}/${GUID}-tasks-${devTag}.war")
 
               //openshift.selector("bc", "tasks").startBuild("--from-file=http://nexus.${prefix}-nexus.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/tasks/${version}/tasks-${version}.war", "--wait=true")
               //openshift.selector("bc", "tasks").startBuild("--from-file=http://nexus.${prefix}-nexus.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/tasks/${version}/tasks-${version}.war", "--wait=true")
