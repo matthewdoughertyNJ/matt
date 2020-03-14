@@ -143,7 +143,7 @@ pipeline {
             openshift.withProject("${devProject}") {
               //  openshift.selector("bc", "tasks").startBuild("--from-file=./target/openshift-tasks.war", "--wait=true")
 
-              openshift.selector("bc", "tasks").startBuild("--from-file=http://homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/${GUID}-tasks/${prodTag}/${GUID-tasks}-${prodTag}.war")
+              openshift.selector("bc", "tasks").startBuild("--from-file=http://homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/${GUID}-tasks/${prodTag}/${GUID}-tasks-${prodTag}.war")
        //sh "${mvnCmd} deploy -DskipTests=true -DaltDeploymentRepository=nexus::default::http://homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/1c48-tasks/${devTag}/${GUID}-${JOB_BASE_NAME}-${devTag}"
               //openshift.selector("bc", "tasks").startBuild("--from-file=http://homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/${GUID}-tasks/${devTag}/${GUID}-tasks-${devTag}.war")
 
