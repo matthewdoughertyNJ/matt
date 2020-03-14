@@ -53,7 +53,7 @@ pipeline {
             devTag  = "${version}-" + currentBuild.number
             // Set the tag for the production image: version
             prodTag = "${version}"
-
+            echo "AAAAAAAAAAA devTag:  ${devTag} based on version: ${version} and " + currentBuild.number
             // Patch Source artifactId to include GUID
             sh "sed -i 's/GUID/${GUID}/g' ./pom.xml"
           }
