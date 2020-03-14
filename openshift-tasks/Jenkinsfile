@@ -145,7 +145,7 @@ pipeline {
 
               echo "startBuild --from-file=https://homework-nexus.apps.shared.na.openshift.opentlc.com/repository/releases/org/jboss/quickstarts/eap/${GUID}-tasks/${prodTag}/${GUID}-tasks-${prodTag}.war --follow"
               def startbuildresult = openshift.selector("bc", "tasks").startBuild("--from-file=https://homework-nexus.apps.shared.na.openshift.opentlc.com/repository/releases/org/jboss/quickstarts/eap/${GUID}-tasks/${prodTag}/${GUID}-tasks-${prodTag}.war --follow")
-              println ${startbuildresult)
+              println ${startbuildresult}
               def bcobject = startbuildresult.narrow('bc')
 	      def bcobjectlogs = bcobject.logs('f')
 	      echo "logs follow: "
