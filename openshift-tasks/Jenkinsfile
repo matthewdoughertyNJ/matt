@@ -131,8 +131,7 @@ pipeline {
           //echo "aaa"
 	  //echo "running start build on homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/"+${GUID}+"-tasks/"+${devTag}+"/"+${GUID}+"-tasks-"+${devTag}+".war"
 	  echo "matt123a"
-
-          echo "startBuild --from-file=http://homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/1c48-tasks/${devTag}/${GUID}-${JOB_BASE_NAME}-${devTag}.war"
+          echo "startBuild --from-file=http://homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/${GUID}-tasks/${prodTag}/${GUID}-${JOB_BASE_NAME}-${prodTag}.war"
 	  //sh 'echo "run start-build ${GUID}-tasks ${devTag} ${GUID}-tasks-${devTag}.war"'
 	  echo "matt123b"
           script {
