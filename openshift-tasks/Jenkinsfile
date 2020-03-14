@@ -132,7 +132,6 @@ pipeline {
 	  //echo "running start build on homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/"+${GUID}+"-tasks/"+${devTag}+"/"+${GUID}+"-tasks-"+${devTag}+".war"
 	  echo "matt123a"
           echo "JOB_BASE_NAME: ${JOB_BASE_NAME}"
-          echo "startBuild aaa --from-file=http://homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/${GUID}-tasks/${prodTag}/${GUID}-tasks-${prodTag}.war"
 	  //sh 'echo "run start-build ${GUID}-tasks ${devTag} ${GUID}-tasks-${devTag}.war"'
 	  echo "matt123b"
           script {
@@ -144,13 +143,18 @@ pipeline {
               //  openshift.selector("bc", "tasks").startBuild("--from-file=./target/openshift-tasks.war", "--wait=true")
 
               echo "startBuild --from-file=https://homework-nexus.apps.shared.na.openshift.opentlc.com/repository/releases/org/jboss/quickstarts/eap/${GUID}-tasks/${prodTag}/${GUID}-tasks-${prodTag}.war --follow"
-              def startbuildresult = openshift.selector("bc", "tasks").startBuild("--from-file=https://homework-nexus.apps.shared.na.openshift.opentlc.com/repository/releases/org/jboss/quickstarts/eap/${GUID}-tasks/${prodTag}/${GUID}-tasks-${prodTag}.war --follow")
-              println ${startbuildresult}
-              def bcobject = startbuildresult.narrow('bc')
-	      def bcobjectlogs = bcobject.logs('f')
-	      echo "logs follow: "
-	      echo ${bcobjectlogs.err}
-	      echo ${bcobjectlogs.out}
+              startbuildresult = openshift.selector("bc", "tasks").startBuild("--from-file=https://homework-nexus.apps.shared.na.openshift.opentlc.com/repository/releases/org/jboss/quickstarts/eap/${GUID}-tasks/${prodTag}/${GUID}-tasks-${prodTag}.war --follow")
+	      echo "echo startbuildresult"
+              echo  startbuildresult
+	      echo "println startbuildresult"
+              println startbuildresult
+	      echo "startbuildresult.println"
+              startbuildresult.println
+              //def bcobject = startbuildresult.narrow('bc')
+	      //def bcobjectlogs = bcobject.logs('f')
+	      //echo "logs follow: "
+	      //echo ${bcobjectlogs.err}
+	      //echo ${bcobjectlogs.out}
               //def bcresultobject = openshift.selector("bc", "tasks").startBuild("--from-file=http://homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/${GUID}-tasks/${prodTag}/${GUID}-tasks-${prodTag}.war --follow")
 	//	echo "bcresultobject follows:"
 	//	echo ${bcresultobject}
