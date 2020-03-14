@@ -155,6 +155,7 @@ pipeline {
               //openshift.selector("bc", "tasks").startBuild("--from-file=http://nexus.${prefix}-nexus.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/tasks/${version}/tasks-${version}.war", "--wait=true")
               //openshift.selector("bc", "tasks").startBuild("--from-file=http://nexus.${prefix}-nexus.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/tasks/${version}/tasks-${version}.war", "--wait=true")
           openshift.tag("tasks:latest", "tasks:${devTag}")
+          echo "openshift.tag(tasks:latest, tasks:${devTag})"
            }
           }
           }
