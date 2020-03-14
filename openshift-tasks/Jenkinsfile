@@ -132,7 +132,7 @@ pipeline {
 	  //echo "running start build on homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/"+${GUID}+"-tasks/"+${devTag}+"/"+${GUID}+"-tasks-"+${devTag}+".war"
 	  echo "matt123a"
           echo "JOB_BASE_NAME: ${JOB_BASE_NAME}"
-          echo "startBuild aaa --from-file=http://homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/${JOB_BASE_NAME}/${prodTag}/${JOB_BASE_NAME}-${prodTag}.war"
+          echo "startBuild aaa --from-file=http://homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/${GUID}-tasks/${prodTag}/${GUID}-tasks-${prodTag}.war"
 	  //sh 'echo "run start-build ${GUID}-tasks ${devTag} ${GUID}-tasks-${devTag}.war"'
 	  echo "matt123b"
           script {
@@ -143,7 +143,7 @@ pipeline {
             openshift.withProject("${devProject}") {
               //  openshift.selector("bc", "tasks").startBuild("--from-file=./target/openshift-tasks.war", "--wait=true")
 
-              openshift.selector("bc", "tasks").startBuild("--from-file=http://homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/${JOB_BASE_NAME}/${prodTag}/${JOB_BASE_NAME}-${prodTag}.war")
+              openshift.selector("bc", "tasks").startBuild("--from-file=http://homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/${GUID}-tasks/${prodTag}/${GUID-Tasks}-${prodTag}.war")
        //sh "${mvnCmd} deploy -DskipTests=true -DaltDeploymentRepository=nexus::default::http://homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/1c48-tasks/${devTag}/${GUID}-${JOB_BASE_NAME}-${devTag}"
               //openshift.selector("bc", "tasks").startBuild("--from-file=http://homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/${GUID}-tasks/${devTag}/${GUID}-tasks-${devTag}.war")
 
