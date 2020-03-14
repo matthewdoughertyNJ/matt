@@ -150,6 +150,7 @@ pipeline {
               println startbuildresult
 	      echo "startbuildresult.println"
               startbuildresult.println
+
               //def bcobject = startbuildresult.narrow('bc')
 	      //def bcobjectlogs = bcobject.logs('f')
 	      //echo "logs follow: "
