@@ -26,9 +26,9 @@ pipeline {
     mvnCmd = "source /usr/local/bin/scl_enable && mvn -s ./nexus_settings.xml"
 
     // Images and Projects
-    imageName   = "${GUID}-tasks"
-    devProject  = "${GUID}-tasks-dev"
-    prodProject = "${GUID}-tasks-prod"
+    imageName   = "${imageName}"
+    devProject  = "${imageName}-dev"
+    prodProject = "${imageName}-prod"
 
     // Tags
     devTag      = "0.0-0"
@@ -132,18 +132,18 @@ pipeline {
 	  //echo "running start build on homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/"+${GUID}+"-tasks/"+${devTag}+"/"+${GUID}+"-tasks-"+${devTag}+".war"
 	  echo "matt123a"
           echo "JOB_BASE_NAME: ${JOB_BASE_NAME}"
-	  //sh 'echo "run start-build ${GUID}-tasks ${devTag} ${GUID}-tasks-${devTag}.war"'
+	  //sh 'echo "run start-build ${imageName} ${devTag} ${imageName}-${devTag}.war"'
 	  echo "matt123b"
           script {
 	  //echo "matt123c"
-	  //sh 'echo "run start-build ${GUID}-tasks ${devTag} ${GUID}-tasks-${devTag}.war"'
+	  //sh 'echo "run start-build ${imageName} ${devTag} ${imageName}-${devTag}.war"'
 	  echo "matt123d"
           openshift.withCluster() {
             openshift.withProject("${devProject}") {
               //  openshift.selector("bc", "tasks").startBuild("--from-file=./target/openshift-tasks.war", "--wait=true")
 
-              echo "startBuild --from-file=https://homework-nexus.apps.shared.na.openshift.opentlc.com/repository/releases/org/jboss/quickstarts/eap/${GUID}-tasks/${prodTag}/${GUID}-tasks-${prodTag}.war --follow"
-              openshift.selector("bc", "tasks").startBuild("--from-file=https://homework-nexus.apps.shared.na.openshift.opentlc.com/repository/releases/org/jboss/quickstarts/eap/${GUID}-tasks/${prodTag}/${GUID}-tasks-${prodTag}.war --follow")
+              echo "startBuild --from-file=https://homework-nexus.apps.shared.na.openshift.opentlc.com/repository/releases/org/jboss/quickstarts/eap/${imageName}/${prodTag}/${imageName}-${prodTag}.war --follow"
+              openshift.selector("bc", "tasks").startBuild("--from-file=https://homework-nexus.apps.shared.na.openshift.opentlc.com/repository/releases/org/jboss/quickstarts/eap/${imageName}/${prodTag}/${imageName}-${prodTag}.war --follow")
 	      //echo "echo startbuildresult"
               //echo  startbuildresult
 	      //echo "println startbuildresult"
@@ -156,18 +156,18 @@ pipeline {
 	      //echo "logs follow: "
 	      //echo ${bcobjectlogs.err}
 	      //echo ${bcobjectlogs.out}
-              //def bcresultobject = openshift.selector("bc", "tasks").startBuild("--from-file=http://homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/${GUID}-tasks/${prodTag}/${GUID}-tasks-${prodTag}.war --follow")
+              //def bcresultobject = openshift.selector("bc", "tasks").startBuild("--from-file=http://homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/${imageName}/${prodTag}/${imageName}-${prodTag}.war --follow")
 	//	echo "bcresultobject follows:"
 	//	echo ${bcresultobject}
               //bcrbcobjectesultobject.logs('-f')
        //sh "${mvnCmd} deploy -DskipTests=true -DaltDeploymentRepository=nexus::default::http://homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/1c48-tasks/${devTag}/${GUID}-${JOB_BASE_NAME}-${devTag}"
-              //openshift.selector("bc", "tasks").startBuild("--from-file=http://homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/${GUID}-tasks/${devTag}/${GUID}-tasks-${devTag}.war")
+              //openshift.selector("bc", "tasks").startBuild("--from-file=http://homework-nexus.gpte-hw-cicd.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/${imageName}/${devTag}/${imageName}-${devTag}.war")
 
               //openshift.selector("bc", "tasks").startBuild("--from-file=http://nexus.${prefix}-nexus.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/tasks/${version}/tasks-${version}.war", "--wait=true")
               //openshift.selector("bc", "tasks").startBuild("--from-file=http://nexus.${prefix}-nexus.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/tasks/${version}/tasks-${version}.war", "--wait=true")
 	  echo "Openshift tag command follows: "
-          echo "${GUID}-tasks:latest, ${GUID}-tasks:${devTag}"
-          openshift.tag("${GUID}-tasks:latest", "${GUID}-tasks:${devTag}")
+          echo "${imageName}:latest, ${imageName}:${devTag}"
+          openshift.tag("${imageName}:latest", "${imageName}:${devTag}")
            }
           }
           }
@@ -184,7 +184,7 @@ pipeline {
       openshift.withCluster() {
         openshift.withProject("${devProject}") {
           // OpenShift 4
-          openshift.set("image", "dc/tasks", "tasks=image-registry.openshift-image-registry.svc:5000/${devProject}/tasks:${devTag}")
+          openshift.set("image", "dc/tasks", "tasks=image-registry.openshift-image-registry.svc:5000/${devProject}/${imageName}:${devTag}")
 
           // For OpenShift 3 use this:
           // openshift.set("image", "dc/tasks", "tasks=docker-registry.default.svc:5000/${devProject}/tasks:${devTag}")
@@ -225,12 +225,12 @@ pipeline {
       steps {
         echo "Copy image to Nexus Container Registry"
         script {
-      sh "skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds openshift:\$(oc whoami -t) --dest-creds admin:app_deploy docker://image-registry.openshift-image-registry.svc.cluster.local:5000/${devProject}/tasks:${devTag} docker://nexus-registry.${prefix}-nexus.svc.cluster.local:5000/tasks:${devTag}"
+      sh "skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds openshift:\$(oc whoami -t) --dest-creds admin:app_deploy docker://image-registry.openshift-image-registry.svc.cluster.local:5000/${devProject}/${imageName}:${devTag} docker://nexus-registry.${prefix}-nexus.svc.cluster.local:5000/${imageName}:${devTag}"
 
       // Tag the built image with the production tag.
       openshift.withCluster() {
         openshift.withProject("${prodProject}") {
-          openshift.tag("${devProject}/tasks:${devTag}", "${devProject}/tasks:${prodTag}")
+          openshift.tag("${devProject}/${imageName}:${devTag}", "${devProject}/${imageName}:${prodTag}")
         }
       }
 
@@ -260,7 +260,7 @@ pipeline {
           // Update the Image on the Production Deployment Config
           def dc = openshift.selector("dc/${destApp}").object()
 
-          dc.spec.template.spec.containers[0].image="image-registry.openshift-image-registry.svc:5000/${devProject}/tasks:${prodTag}"
+          dc.spec.template.spec.containers[0].image="image-registry.openshift-image-registry.svc:5000/${devProject}/${imageName}:${prodTag}"
 
           openshift.apply(dc)
 
