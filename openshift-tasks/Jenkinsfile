@@ -143,13 +143,13 @@ pipeline {
               //  openshift.selector("bc", "tasks").startBuild("--from-file=./target/openshift-tasks.war", "--wait=true")
 
               echo "startBuild --from-file=https://homework-nexus.apps.shared.na.openshift.opentlc.com/repository/releases/org/jboss/quickstarts/eap/${GUID}-tasks/${prodTag}/${GUID}-tasks-${prodTag}.war --follow"
-              startbuildresult = openshift.selector("bc", "tasks").startBuild("--from-file=https://homework-nexus.apps.shared.na.openshift.opentlc.com/repository/releases/org/jboss/quickstarts/eap/${GUID}-tasks/${prodTag}/${GUID}-tasks-${prodTag}.war --follow")
-	      echo "echo startbuildresult"
-              echo  startbuildresult
-	      echo "println startbuildresult"
-              println startbuildresult
-	      echo "startbuildresult.println"
-              startbuildresult.println
+              openshift.selector("bc", "tasks").startBuild("--from-file=https://homework-nexus.apps.shared.na.openshift.opentlc.com/repository/releases/org/jboss/quickstarts/eap/${GUID}-tasks/${prodTag}/${GUID}-tasks-${prodTag}.war --follow")
+	      //echo "echo startbuildresult"
+              //echo  startbuildresult
+	      //echo "println startbuildresult"
+              //println startbuildresult
+	      //echo "startbuildresult.println"
+              //startbuildresult.println
 
               //def bcobject = startbuildresult.narrow('bc')
 	      //def bcobjectlogs = bcobject.logs('f')
@@ -166,7 +166,7 @@ pipeline {
               //openshift.selector("bc", "tasks").startBuild("--from-file=http://nexus.${prefix}-nexus.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/tasks/${version}/tasks-${version}.war", "--wait=true")
               //openshift.selector("bc", "tasks").startBuild("--from-file=http://nexus.${prefix}-nexus.svc.cluster.local:8081/repository/releases/org/jboss/quickstarts/eap/tasks/${version}/tasks-${version}.war", "--wait=true")
 	  echo "Openshift tag command follows: "
-          echo "openshift.tag(tasks:latest, tasks:${devTag})"
+          echo "${GUID}-tasks:latest, ${GUID}-tasks:${devTag}"
           openshift.tag("${GUID}-tasks:latest", "${GUID}-tasks:${devTag}")
            }
           }
