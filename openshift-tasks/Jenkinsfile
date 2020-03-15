@@ -225,8 +225,8 @@ pipeline {
       steps {
         echo "Copy image to Nexus Container Registry"
         script {
-      echo  "skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds openshift:\$(oc whoami -t) --dest-creds admin:app_deploy docker://image-registry.openshift-image-registry.svc.cluster.local:5000/${devProject}/${imageName}:${devTag} docker://nexus-registry.gpte-hw-cicd.svc.cluster.local:5000/${imageName}:${devTag}"
-      sh "skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds openshift:\$(oc whoami -t) --dest-creds admin:app_deploy docker://image-registry.openshift-image-registry.svc.cluster.local:5000/${devProject}/${imageName}:${devTag} docker://nexus-registry.gpte-hw-cicd.svc.cluster.local:5000/${imageName}:${devTag}"
+      echo  "skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds openshift:\$(oc whoami -t) --dest-creds admin:app_deploy docker://image-registry.openshift-image-registry.svc.cluster.local:5000/${devProject}/${imageName}:${devTag} docker://homework-nexus-registry.gpte-hw-cicd.svc.cluster.local:5000/${imageName}:${devTag}"
+      sh "skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds openshift:\$(oc whoami -t) --dest-creds admin:app_deploy docker://image-registry.openshift-image-registry.svc.cluster.local:5000/${devProject}/${imageName}:${devTag} docker://homework-nexus-registry.gpte-hw-cicd.svc.cluster.local:5000/${imageName}:${devTag}"
 
       // Tag the built image with the production tag.
       openshift.withCluster() {
