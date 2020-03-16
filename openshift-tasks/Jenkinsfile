@@ -48,10 +48,11 @@ pipeline {
         //slug = slug.substring(0, slug.lastIndexOf('.')) //Remove .git
         //echo "The projectKey is: ${key}"
         //echo "The repositorySlug is: ${slug}" 
-        reply = checkout scm
+        //checkout scm
  	echo "REPO: ${REPO}"
- 	echo "reply: " + reply
-        //checkout([$class: 'GitSCM', branches: [[name: '*/master'], userRemoteConfigs: [[url: ${REPO}]]]]) 
+	echo "scm " + scm
+ 	//echo "reply: " + reply
+        checkout([$class: 'GitSCM', branches: [[name: '*/master'], userRemoteConfigs: [[url: ${REPO}]]]]) 
         dir('openshift-tasks') {
           script {
             def pom = readMavenPom file: 'pom.xml'
@@ -256,6 +257,7 @@ pipeline {
     // -------------------------------------
     stage('Blue/Green Production Deployment') {
       steps {
+       dir('openshift-tasks') {
         script {
       openshift.withCluster() {
         openshift.withProject("${prodProject}") {
@@ -299,6 +301,7 @@ pipeline {
           //      Make sure the application is running and ready before proceeding
 
         }
+       }
       }
     }
 
