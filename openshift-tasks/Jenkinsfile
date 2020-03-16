@@ -44,7 +44,7 @@ pipeline {
       steps {
  	echo "REPO: ${REPO}"
         //checkout([$class: 'GitSCM', branches: [[name: '*/master'], userRemoteConfigs: [[url: ${REPO}]]]]) 
-	git credentialsId: 'mdougherty-stonedoorgroup.com', url: 'https://homework-gitea.apps.shared.na.openshift.opentlc.com/mdougherty-stonedoorgroup.com/app-dev-homework.git'
+//	git credentialsId: 'mdougherty-stonedoorgroup.com', url: 'https://homework-gitea.apps.shared.na.openshift.opentlc.com/mdougherty-stonedoorgroup.com/app-dev-homework.git'
         checkout scm
  	//echo "reply: " + reply
         dir('openshift-tasks') {
