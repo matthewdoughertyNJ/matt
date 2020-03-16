@@ -42,7 +42,13 @@ pipeline {
     // Checkout Source Code.
     stage('Checkout Source') {
       steps {
-        checkout scm
+        def repoUrl = checkout(scm).GIT_URL
+        def key = repoUrl.tokenize('/')[3]
+        def slug = repoUrl.tokenize('/')[4]
+        slug = slug.substring(0, slug.lastIndexOf('.')) //Remove .git
+        echo "The projectKey is: ${key}"
+        echo "The repositorySlug is: ${slug}" 
+        //checkout scm
         //checkout([$class: 'GitSCM', branches: [[name: '*/master'], userRemoteConfigs: [[url: ${REPO}]]]]) 
         dir('openshift-tasks') {
           script {
