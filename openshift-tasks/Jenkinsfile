@@ -48,9 +48,10 @@ pipeline {
         //slug = slug.substring(0, slug.lastIndexOf('.')) //Remove .git
         //echo "The projectKey is: ${key}"
         //echo "The repositorySlug is: ${slug}" 
-        //checkout scm
+        def reply = checkout scm
  	echo "REPO: ${REPO}"
-        checkout([$class: 'GitSCM', branches: [[name: '*/master'], userRemoteConfigs: [[url: ${REPO}]]]]) 
+ 	echo "reply: ${reply}"
+        //checkout([$class: 'GitSCM', branches: [[name: '*/master'], userRemoteConfigs: [[url: ${REPO}]]]]) 
         dir('openshift-tasks') {
           script {
             def pom = readMavenPom file: 'pom.xml'
