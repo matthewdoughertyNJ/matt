@@ -48,9 +48,9 @@ pipeline {
         //slug = slug.substring(0, slug.lastIndexOf('.')) //Remove .git
         //echo "The projectKey is: ${key}"
         //echo "The repositorySlug is: ${slug}" 
+	echo "scm " + scm
         checkout scm
  	echo "REPO: ${REPO}"
-	echo "scm " + scm
  	//echo "reply: " + reply
         //checkout([$class: 'GitSCM', branches: [[name: '*/master'], userRemoteConfigs: [[url: ${REPO}]]]]) 
         dir('openshift-tasks') {
