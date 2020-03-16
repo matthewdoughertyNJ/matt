@@ -42,10 +42,10 @@ pipeline {
     // Checkout Source Code.
     stage('Checkout Source') {
       steps {
- 	echo "REPO: ${REPO}"
-	git credentialsId: 'mdougherty-stonedoorgroup.com', url: 'https://homework-gitea.apps.shared.na.openshift.opentlc.com/mdougherty-stonedoorgroup.com/app-dev-homework.git'
-        checkout([$class: 'GitSCM', branches: [[name: '*/master'], userRemoteConfigs: [[url: ${REPO}]]]]) 
-        //checkout scm
+ 	//echo "REPO: ${REPO}"
+	//git credentialsId: 'mdougherty-stonedoorgroup.com', url: 'https://homework-gitea.apps.shared.na.openshift.opentlc.com/mdougherty-stonedoorgroup.com/app-dev-homework.git'
+        //checkout([$class: 'GitSCM', branches: [[name: '*/master'], userRemoteConfigs: [[url: ${REPO}]]]]) 
+        checkout scm
  	//echo "reply: " + reply
         dir('openshift-tasks') {
           script {
