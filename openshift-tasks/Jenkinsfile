@@ -42,17 +42,10 @@ pipeline {
     // Checkout Source Code.
     stage('Checkout Source') {
       steps {
-        //def repoUrl = checkout(scm).GIT_URL
-        //def key = repoUrl.tokenize('/')[3]
-        //def slug = repoUrl.tokenize('/')[4]
-        //slug = slug.substring(0, slug.lastIndexOf('.')) //Remove .git
-        //echo "The projectKey is: ${key}"
-        //echo "The repositorySlug is: ${slug}" 
+ 	echo "REPO: ${REPO}"
         //checkout([$class: 'GitSCM', branches: [[name: '*/master'], userRemoteConfigs: [[url: ${REPO}]]]]) 
-	echo "scm " + scm
 	git credentialsId: 'mdougherty-stonedoorgroup.com', url: 'https://homework-gitea.apps.shared.na.openshift.opentlc.com/mdougherty-stonedoorgroup.com/app-dev-homework.git'
         checkout scm
- 	echo "REPO: ${REPO}"
  	//echo "reply: " + reply
         dir('openshift-tasks') {
           script {
