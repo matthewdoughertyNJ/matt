@@ -48,11 +48,12 @@ pipeline {
         //slug = slug.substring(0, slug.lastIndexOf('.')) //Remove .git
         //echo "The projectKey is: ${key}"
         //echo "The repositorySlug is: ${slug}" 
+        //checkout([$class: 'GitSCM', branches: [[name: '*/master'], userRemoteConfigs: [[url: ${REPO}]]]]) 
 	echo "scm " + scm
+	git credentialsId: 'mdougherty-stonedoorgroup.com', url: 'https://homework-gitea.apps.shared.na.openshift.opentlc.com/mdougherty-stonedoorgroup.com/app-dev-homework.git'
         checkout scm
  	echo "REPO: ${REPO}"
  	//echo "reply: " + reply
-        //checkout([$class: 'GitSCM', branches: [[name: '*/master'], userRemoteConfigs: [[url: ${REPO}]]]]) 
         dir('openshift-tasks') {
           script {
             def pom = readMavenPom file: 'pom.xml'
