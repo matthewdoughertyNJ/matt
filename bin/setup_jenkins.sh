@@ -48,7 +48,6 @@ oc new-build --strategy=docker -D $'FROM quay.io/openshift/origin-jenkins-agent-
 oc create secret generic my-gitea-secret --from-literal=username=mdougherty-stonedoorgroup.com --from-literal=password=resetMeN0w
 ###oc create secret generic my-gitea-secret --from-literal=username=mdougherty-stonedoorgroup.com --from-literal=password=resetMeN0w
 ###oc set build-secret --source bc/jenkins-agent-appdev my-gitea-secret
-oc set build-secret --source bc/tasks-pipeline my-gitea-secret
 
 
 # Create pipeline build config pointing to the ${REPO} with contextDir `openshift-tasks`
@@ -82,6 +81,7 @@ spec:
 EOF
 oc apply -f tasks-pipeline-bc.yaml -n ${GUID}-jenkins
 
+oc set build-secret --source bc/tasks-pipeline my-gitea-secret
 # ========================================
 # No changes are necessary below this line
 # Make sure that Jenkins is fully up and running before proceeding!
