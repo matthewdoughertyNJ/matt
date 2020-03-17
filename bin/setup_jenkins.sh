@@ -44,10 +44,7 @@ oc new-build --strategy=docker -D $'FROM quay.io/openshift/origin-jenkins-agent-
 # Passing it from Jenkins would show it in the Jenkins Log
 # TBD
 
-## Had to create a new account because gitea user mdougherty-stonedoorgroup.com was borked and will not reset pw.
 oc create secret generic my-gitea-secret --from-literal=username=mdougherty-stonedoorgroup.com --from-literal=password=resetMeN0w
-###oc create secret generic my-gitea-secret --from-literal=username=mdougherty-stonedoorgroup.com --from-literal=password=resetMeN0w
-###oc set build-secret --source bc/jenkins-agent-appdev my-gitea-secret
 
 
 # Create pipeline build config pointing to the ${REPO} with contextDir `openshift-tasks`
@@ -75,7 +72,6 @@ spec:
           value: 1c48
         - name: REPO
           value:  "app-dev-homework.git"
-#          value:  "https://homework-gitea.apps.shared.na.openshift.opentlc.com/mdougherty-stonedoorgroup.com/app-dev-homework.git"
         - name: CLUSTER
           value: https://api.shared.na.openshift.opentlc.com:6443
 EOF
